@@ -12,6 +12,7 @@ try
 
     // Add services to the container.
     builder.Services.ConfigureCORS();
+    builder.Services.ConfigureSqlContext(builder.Configuration);
 
     builder.Services.AddControllers();
 
@@ -48,7 +49,7 @@ try
 catch (Exception exception)
 {
     // NLog: catch setup errors
-    logger.Error(exception, "Stopped program because of exception");
+    logger.Error(exception, exception.Message);
     throw;
 }
 finally

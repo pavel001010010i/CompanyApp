@@ -10,7 +10,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CompanyApp", "CompanyApp\Co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contracts", "Contracts\Contracts.csproj", "{72437FF7-3689-4A0C-97B4-EEC14DA74FED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entities", "Entities\Entities.csproj", "{42894134-F3BF-4B3C-A3D4-A324332CBEBB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entities", "Entities\Entities.csproj", "{42894134-F3BF-4B3C-A3D4-A324332CBEBB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repository", "Repository\Repository.csproj", "{DC5513C8-7C1C-484D-A48F-05A3776835C4}"
+	ProjectSection(ProjectDependencies) = postProject
+		{42894134-F3BF-4B3C-A3D4-A324332CBEBB} = {42894134-F3BF-4B3C-A3D4-A324332CBEBB}
+		{72437FF7-3689-4A0C-97B4-EEC14DA74FED} = {72437FF7-3689-4A0C-97B4-EEC14DA74FED}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,6 +36,10 @@ Global
 		{42894134-F3BF-4B3C-A3D4-A324332CBEBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{42894134-F3BF-4B3C-A3D4-A324332CBEBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{42894134-F3BF-4B3C-A3D4-A324332CBEBB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC5513C8-7C1C-484D-A48F-05A3776835C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC5513C8-7C1C-484D-A48F-05A3776835C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC5513C8-7C1C-484D-A48F-05A3776835C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC5513C8-7C1C-484D-A48F-05A3776835C4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
