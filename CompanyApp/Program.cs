@@ -1,5 +1,6 @@
 using CompanyApp.Extensions;
 using CompanyApp.Middleware;
+using CompanyApp.OutputFormatter;
 using Microsoft.AspNetCore.HttpOverrides;
 using NLog;
 using NLog.Web;
@@ -23,6 +24,13 @@ try
     builder.Logging.ClearProviders();
     builder.Logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
     builder.Host.UseNLog();
+
+    builder.Services.AddControllers(options =>
+    {
+        options.RespectBrowserAcceptHeader = true;
+        options.ReturnHttpNotAcceptable = true;
+    }).AddXmlSerializerFormatters()
+    .AddCustomCSVFormatter();
 
     var app = builder.Build();
 
