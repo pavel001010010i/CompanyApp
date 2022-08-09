@@ -1,6 +1,8 @@
 ﻿
+using Contracts.Managers;
 using Entities.Model;
 using Microsoft.EntityFrameworkCore;
+using Repository.Managers;
 
 namespace CompanyApp.Extensions
 {
@@ -21,5 +23,8 @@ namespace CompanyApp.Extensions
                 services.AddDbContext<RepositoryContext>(opts =>
                     opts.UseSqlServer(configuration.GetConnectionString("sqlConnection"), b =>
                         b.MigrationsAssembly("CompanyApp")));
+
+        public static void ConfigureRepositoryManager(this IServiceCollection services) =>
+            services.AddScoped<IRepositoryManager, RepositoryManager>();
     }
 }

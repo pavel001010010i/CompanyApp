@@ -1,4 +1,5 @@
 using CompanyApp.Extensions;
+using CompanyApp.Middleware;
 using Microsoft.AspNetCore.HttpOverrides;
 using NLog;
 using NLog.Web;
@@ -13,6 +14,9 @@ try
     // Add services to the container.
     builder.Services.ConfigureCORS();
     builder.Services.ConfigureSqlContext(builder.Configuration);
+    builder.Services.ConfigureRepositoryManager();
+
+    builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
     builder.Services.AddControllers();
 
@@ -29,6 +33,7 @@ try
     else
         app.UseHsts();
 
+    app.ConfigureExceptionHandler(app.Logger);
     app.UseStaticFiles();
     app.UseCors("CORSPolicy");
 

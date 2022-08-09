@@ -1,3 +1,4 @@
+using Contracts.Managers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CompanyApp.Controllers
@@ -9,13 +10,15 @@ namespace CompanyApp.Controllers
         private static readonly string[] Summaries = new[]
         {
         "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };
+        };
 
         private readonly ILogger<WeatherForecastController> _logger;
+        private readonly IRepositoryManager _repository;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, IRepositoryManager repository)
         {
             _logger = logger;
+            _repository = repository;
         }
 
         [HttpGet]
@@ -24,7 +27,7 @@ namespace CompanyApp.Controllers
             _logger.LogInformation("Here is info message from our values controller.");
             _logger.LogDebug("Here is debug message from our values controller.");
             _logger.LogWarning("Here is warn message from our values controller.");
-            _logger.LogError("Here is an error message from our values controller.");
+            _logger.LogError(_repository.Employee.GetType().ToString());
 
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
