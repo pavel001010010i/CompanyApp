@@ -29,7 +29,8 @@ try
     {
         options.RespectBrowserAcceptHeader = true;
         options.ReturnHttpNotAcceptable = true;
-    }).AddXmlSerializerFormatters()
+    }).AddNewtonsoftJson()
+    //.AddXmlSerializerFormatters()
     .AddCustomCSVFormatter();
 
     var app = builder.Build();

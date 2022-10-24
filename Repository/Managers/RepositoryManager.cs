@@ -2,11 +2,6 @@
 using Contracts.Managers;
 using Entities.Model;
 using Repository.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Repository.Managers
 {
@@ -15,10 +10,7 @@ namespace Repository.Managers
         private RepositoryContext _repositoryContext;
         private ICompanyRepository _companyRepository;
         private IEmployeeRepository _employeeRepository;
-        public RepositoryManager(RepositoryContext repositoryContext)
-        {
-            _repositoryContext = repositoryContext;
-        }
+        public RepositoryManager(RepositoryContext repositoryContext) => _repositoryContext = repositoryContext;
         public ICompanyRepository Company
         {
             get
@@ -37,7 +29,7 @@ namespace Repository.Managers
                 return _employeeRepository;
             }
         }
-        public void Save() => _repositoryContext.SaveChanges();
+        public Task SaveAsync() => _repositoryContext.SaveChangesAsync();
 
     }
 }
