@@ -1,7 +1,9 @@
+using CompanyApp.ActionFiltres;
 using CompanyApp.Extensions;
 using CompanyApp.Middleware;
 using CompanyApp.OutputFormatter;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Mvc;
 using NLog;
 using NLog.Web;
 
@@ -13,6 +15,7 @@ try
     var builder = WebApplication.CreateBuilder(args);
 
     // Add services to the container.
+    builder.Services.ConfigureActionFilters();
     builder.Services.ConfigureCORS();
     builder.Services.ConfigureSqlContext(builder.Configuration);
     builder.Services.ConfigureRepositoryManager();
@@ -21,10 +24,12 @@ try
 
     builder.Services.AddControllers();
 
+
     builder.Logging.ClearProviders();
     builder.Logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
     builder.Host.UseNLog();
 
+    
     builder.Services.AddControllers(options =>
     {
         options.RespectBrowserAcceptHeader = true;
@@ -32,6 +37,11 @@ try
     }).AddNewtonsoftJson()
     //.AddXmlSerializerFormatters()
     .AddCustomCSVFormatter();
+
+    builder.Services.Configure<ApiBehaviorOptions>(options =>
+    {
+        options.SuppressModelStateInvalidFilter = true;
+    });
 
     var app = builder.Build();
 

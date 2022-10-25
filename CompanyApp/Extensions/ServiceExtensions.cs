@@ -1,4 +1,5 @@
 ﻿
+using CompanyApp.ActionFiltres;
 using CompanyApp.OutputFormatter;
 using Contracts.Managers;
 using Entities.Model;
@@ -29,5 +30,12 @@ namespace CompanyApp.Extensions
             services.AddScoped<IRepositoryManager, RepositoryManager>();
         public static IMvcBuilder AddCustomCSVFormatter(this IMvcBuilder builder) =>
             builder.AddMvcOptions(config => config.OutputFormatters.Add(new CsvOutputFormatter()));
+
+        public static void ConfigureActionFilters(this IServiceCollection services)
+        {
+            services.AddScoped<ValidationFilterAttribute>();
+            services.AddScoped<ValidateCompanyExistsAttribute>();
+            services.AddScoped<ValidateEmployeeForCompanyExistsAttribute>();
+        }
     }
 }
