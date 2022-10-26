@@ -28,6 +28,6 @@ namespace Repository
                     .Where(expression);
         public void Create(T entity) => RepositoryContext.Set<T>().Add(entity);
         public void Update(T entity) => RepositoryContext.Set<T>().Update(entity);
-        public void Delete(T entity) => RepositoryContext.Set<T>().Remove(entity) ;
+        public void Delete(T entity) => RepositoryContext.Set<T>().Remove(entity);
     }
 }
