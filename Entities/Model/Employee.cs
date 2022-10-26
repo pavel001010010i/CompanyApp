@@ -18,7 +18,6 @@ namespace Entities.Model
         public string? Position { get; set; }
         [ForeignKey(nameof(Company))]
         public Guid? CompanyId { get; set; }
-        public Company? Company { get; set; }
     }
 
 }
