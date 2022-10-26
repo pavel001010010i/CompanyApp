@@ -18,10 +18,23 @@ namespace CompanyApp.Controllers
 
         public CompaniesController(ILogger<CompaniesController> logger, IRepositoryManager repository, IMapper mapper)
             => (_logger, _repository, _mapper) = (logger, repository, mapper);
+        static void foo(int bar)
+        {
+            bar += 2;
+            Console.WriteLine(bar);
+        }
+
 
         [HttpGet]
         public async Task<IActionResult> GetCompanies()
         {
+            int bar = 0;
+
+            bar++;
+            Console.WriteLine(bar);
+            foo(bar);
+            Console.WriteLine(bar);
+
             var companies = await _repository.Company.GetAllCompaniesAsync(trackChanges: false);
             var companiesDto = _mapper.Map<IEnumerable<CompanyDto>>(companies);
 

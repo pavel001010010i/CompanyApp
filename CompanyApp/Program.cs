@@ -24,7 +24,7 @@ try
 
     builder.Services.AddControllers();
 
-    builder.Services.AddSwaggerGen();
+
     builder.Logging.ClearProviders();
     builder.Logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
     builder.Host.UseNLog();
@@ -48,12 +48,7 @@ try
     // Configure the HTTP request pipeline.
 
     if (app.Environment.IsDevelopment())
-    {
-        app.UseSwagger();
-        app.UseSwaggerUI();
         app.UseDeveloperExceptionPage();
-    }
-        
     else
         app.UseHsts();
 
