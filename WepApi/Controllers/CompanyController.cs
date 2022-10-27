@@ -1,15 +1,15 @@
-﻿using Application.Companies.Commands.CreateCompany;
+﻿using AutoMapper;
+using WepApi.Models;
+using Microsoft.AspNetCore.Mvc;
+using Application.ModelBinders;
+using Application.Companies.Queries.GetCompany;
 using Application.Companies.Commands.DeleteCompany;
 using Application.Companies.Commands.UpdateCompany;
 using Application.Companies.Queries.GetCompany.List;
-using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-using WepApi.Models;
-using Application.Companies.Queries.GetCompany;
 using Application.Companies.Queries.GetCompany.Details;
-using Entities.DTO;
-using Application.ModelBinders;
 using Application.Companies.Queries.GetCompany.ListByIds;
+using Application.Companies.Commands.CreateCompany;
+using Domain;
 
 namespace WepApi.Controllers
 {
@@ -17,23 +17,6 @@ namespace WepApi.Controllers
     {
         private readonly IMapper _mapper;
         public CompanyController(IMapper mapper) => _mapper = mapper;
-
-        [HttpGet]
-        public async Task<ActionResult<CompanyListDTO>> GetCompanies()
-        {
-            var result = await Mediator.Send(new GetCompanyListQuery());
-            return Ok(result);
-        }
-
-
-        [HttpGet("collection/({ids})")]
-        public async Task<IActionResult> GetCompanyCollection([ModelBinder(BinderType = typeof(ArrayModelBinder))] IEnumerable<Guid> ids)
-        {
-            var query = new GetCompanyListByIdsQuery { Ids = ids };
-            var result = await Mediator.Send(query);
-
-            return Ok(result);
-        }
 
         [HttpGet("{id}", Name = "CompanyById")]
         public async Task<ActionResult<CompanyDTO>> GetCompany(Guid id)
@@ -43,13 +26,42 @@ namespace WepApi.Controllers
             return Ok(result);
         }
 
+        [HttpGet]
+        public async Task<ActionResult<CompanyListDTO>> GetCompanies()
+        {
+            var result = await Mediator.Send(new GetCompanyListQuery());
+            return Ok(result);
+        }
+
+
+        [HttpGet("collection/({ids})", Name = "CompanyCollection")]
+        public async Task<IActionResult> GetCompanyCollection([ModelBinder(BinderType = typeof(ArrayModelBinder))] IEnumerable<Guid> ids)
+        {
+            var query = new GetCompanyListByIdsQuery { Ids = ids };
+            var result = await Mediator.Send(query);
+            return Ok(result);
+        }
+
         [HttpPost]
         public async Task<ActionResult> CreateCompany([FromBody] CreateCompanyDTO CreateCompanyDTO)
         {
             var command = _mapper.Map<CreateCompanyCommand>(CreateCompanyDTO);
             var company = await Mediator.Send(command);
-
             return CreatedAtRoute("CompanyById", new { id = company.Id }, company);
+        }
+
+        [HttpPost("collection")]
+        public async Task<ActionResult> CreateCompanyCollection([FromBody] IEnumerable<CreateCompanyDTO> CreateCompanyCollectionDTO)
+        {
+            IList<Company> companies = new List<Company>();
+
+            foreach(var company in CreateCompanyCollectionDTO)
+            {
+                var command = _mapper.Map<CreateCompanyCommand>(company);
+                companies.Add(await Mediator.Send(command)); 
+            }
+            var ids = string.Join(",", companies.Select(c => c.Id));
+            return CreatedAtRoute("CompanyCollection", new { ids }, companies);
         }
 
         [HttpPut]
@@ -64,7 +76,6 @@ namespace WepApi.Controllers
         public async Task<IActionResult> DeleteCompany(Guid id)
         {
             var command = new DeleteCompanyCommand { Id = id };
-            
             await Mediator.Send(command);
             return NoContent();
         }
