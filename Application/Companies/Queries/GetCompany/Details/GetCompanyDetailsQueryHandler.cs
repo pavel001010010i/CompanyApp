@@ -9,14 +9,14 @@ using Microsoft.EntityFrameworkCore;
 namespace Application.Companies.Queries.GetCompany.Details
 {
     public class GetCompanyDetailsQueryHandler
-        : IRequestHandler<GetCompanyDetailsQuery, CompanyDTO>
+        : IRequestHandler<GetCompanyDetailsQuery, CompanyDetailsVM>
     {
         private readonly IDbContext _dbContext;
         private readonly IMapper _mapper;
         public GetCompanyDetailsQueryHandler(IDbContext dbContext, IMapper mapper) 
             => (_dbContext, _mapper) = (dbContext, mapper);
        
-        public async Task<CompanyDTO> Handle(GetCompanyDetailsQuery request,
+        public async Task<CompanyDetailsVM> Handle(GetCompanyDetailsQuery request,
             CancellationToken cancellationToken)
         {
             var entity = await _dbContext.Companies.FirstOrDefaultAsync(company =>
@@ -25,7 +25,7 @@ namespace Application.Companies.Queries.GetCompany.Details
             if (entity == null)
                 throw new NotFoundException(nameof(Company), request.Id);
 
-            return _mapper.Map<CompanyDTO>(entity);
+            return _mapper.Map<CompanyDetailsVM>(entity);
         }
     }
 }

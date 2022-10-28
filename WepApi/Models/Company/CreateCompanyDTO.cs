@@ -2,7 +2,7 @@
 using Application.Companies.Commands.CreateCompany;
 using AutoMapper;
 
-namespace WepApi.Models
+namespace WepApi.Models.Company
 {
     public class CreateCompanyDTO : IMapWith<CreateCompanyCommand>
     {

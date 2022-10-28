@@ -3,7 +3,7 @@ namespace WepApi
 {
     public static class DependencyInjection
     {
-        public static void ConfigureCORS(this IServiceCollection services) =>
+        public static void AddConfigureCORS(this IServiceCollection services) =>
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowAll", policy =>

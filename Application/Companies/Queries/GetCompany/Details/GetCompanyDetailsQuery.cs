@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MediatR;
+﻿using MediatR;
 
 namespace Application.Companies.Queries.GetCompany.Details
 {
-    public class GetCompanyDetailsQuery : IRequest<CompanyDTO>
+    public class GetCompanyDetailsQuery : IRequest<CompanyDetailsVM>
     {
         public Guid Id { get; set; }
     }

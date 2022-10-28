@@ -15,7 +15,7 @@ builder.Services.AddAutoMapper(config =>
 
 builder.Services.AddApplication();
 builder.Services.AddPersistence(builder.Configuration);
-builder.Services.ConfigureCORS();
+builder.Services.AddConfigureCORS();
 
 
 builder.Services.AddControllers();

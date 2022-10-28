@@ -2,7 +2,7 @@
 
 namespace Application.Companies.Queries.GetCompany.List
 {
-    public class GetCompanyListQuery : IRequest<CompanyListDTO>
+    public class GetCompanyListQuery : IRequest<CompanyListDetailsVM>
     {
 
     }

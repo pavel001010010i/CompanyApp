@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using WepApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using Application.ModelBinders;
 using Application.Companies.Queries.GetCompany;
@@ -10,6 +9,7 @@ using Application.Companies.Queries.GetCompany.Details;
 using Application.Companies.Queries.GetCompany.ListByIds;
 using Application.Companies.Commands.CreateCompany;
 using Domain;
+using WepApi.Models.Company;
 
 namespace WepApi.Controllers
 {
@@ -19,7 +19,7 @@ namespace WepApi.Controllers
         public CompanyController(IMapper mapper) => _mapper = mapper;
 
         [HttpGet("{id}", Name = "CompanyById")]
-        public async Task<ActionResult<CompanyDTO>> GetCompany(Guid id)
+        public async Task<ActionResult<CompanyDetailsVM>> GetCompany(Guid id)
         {
             var query = new GetCompanyDetailsQuery { Id = id };
             var result = await Mediator.Send(query);
@@ -27,7 +27,7 @@ namespace WepApi.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<CompanyListDTO>> GetCompanies()
+        public async Task<ActionResult<CompanyListDetailsVM>> GetCompanies()
         {
             var result = await Mediator.Send(new GetCompanyListQuery());
             return Ok(result);

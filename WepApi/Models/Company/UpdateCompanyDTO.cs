@@ -1,11 +1,10 @@
 ﻿using Application.Common.Mapping;
 using Application.Companies.Commands.UpdateCompany;
 using AutoMapper;
-using Entities.Model;
 
-namespace WepApi.Models
+namespace WepApi.Models.Company
 {
-    public class UpdateCompanyDTO: IMapWith<UpdateCompanyCommand>
+    public class UpdateCompanyDTO : IMapWith<UpdateCompanyCommand>
     {
         public Guid Id { get; set; } = Guid.Empty;
         public string Name { get; set; }
