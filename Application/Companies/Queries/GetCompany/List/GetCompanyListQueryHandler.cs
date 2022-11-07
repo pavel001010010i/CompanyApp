@@ -8,22 +8,22 @@ using Microsoft.EntityFrameworkCore;
 namespace Application.Companies.Queries.GetCompany.List
 {
     public class GetCompanyListQueryHandler
-        : IRequestHandler<GetCompanyListQuery, CompanyListDetailsVM>
+        : IRequestHandler<GetCompanyListQuery, CompanyListDetailsVm>
     {
         private readonly IDbContext _dbContext;
         private readonly IMapper _mapper;
         public GetCompanyListQueryHandler(IDbContext dbContext, IMapper mapper)
             => (_dbContext, _mapper) = (dbContext, mapper);
 
-        public async Task<CompanyListDetailsVM> Handle(GetCompanyListQuery request, CancellationToken cancellationToken)
+        public async Task<CompanyListDetailsVm> Handle(GetCompanyListQuery request, CancellationToken cancellationToken)
         {
             var companyQuery = await _dbContext.Companies
                 .OrderBy(x => x.Name)
                 .AsNoTracking()
-                .ProjectTo<CompanyDetailsVM>(_mapper.ConfigurationProvider)
+                .ProjectTo<CompanyDetailsVm>(_mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken);
                 
-            return new CompanyListDetailsVM { Companies = companyQuery };
+            return new CompanyListDetailsVm { Companies = companyQuery };
         }
     }
 }

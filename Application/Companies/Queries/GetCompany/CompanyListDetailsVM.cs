@@ -1,8 +1,8 @@
 ﻿namespace Application.Companies.Queries.GetCompany
 {
-    public class CompanyListDetailsVM
+    public class CompanyListDetailsVm
     {
-        public IList<CompanyDetailsVM> Companies { get; set; }
+        public IList<CompanyDetailsVm> Companies { get; set; }
 
     }
 }

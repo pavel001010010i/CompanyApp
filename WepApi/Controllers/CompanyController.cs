@@ -19,7 +19,7 @@ namespace WepApi.Controllers
         public CompanyController(IMapper mapper) => _mapper = mapper;
 
         [HttpGet("{id}", Name = "CompanyById")]
-        public async Task<ActionResult<CompanyDetailsVM>> GetCompany(Guid id)
+        public async Task<ActionResult<CompanyDetailsVm>> GetCompany(Guid id)
         {
             var query = new GetCompanyDetailsQuery { Id = id };
             var result = await Mediator.Send(query);
@@ -27,7 +27,7 @@ namespace WepApi.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<CompanyListDetailsVM>> GetCompanies()
+        public async Task<ActionResult<CompanyListDetailsVm>> GetCompanies()
         {
             var result = await Mediator.Send(new GetCompanyListQuery());
             return Ok(result);
@@ -46,22 +46,19 @@ namespace WepApi.Controllers
         public async Task<ActionResult> CreateCompany([FromBody] CreateCompanyDTO CreateCompanyDTO)
         {
             var command = _mapper.Map<CreateCompanyCommand>(CreateCompanyDTO);
-            var company = await Mediator.Send(command);
-            return CreatedAtRoute("CompanyById", new { id = company.Id }, company);
+            var companyId = await Mediator.Send(command);
+            return Ok(companyId);
         }
 
         [HttpPost("collection")]
         public async Task<ActionResult> CreateCompanyCollection([FromBody] IEnumerable<CreateCompanyDTO> CreateCompanyCollectionDTO)
         {
-            IList<Company> companies = new List<Company>();
 
             foreach(var company in CreateCompanyCollectionDTO)
             {
                 var command = _mapper.Map<CreateCompanyCommand>(company);
-                companies.Add(await Mediator.Send(command)); 
             }
-            var ids = string.Join(",", companies.Select(c => c.Id));
-            return CreatedAtRoute("CompanyCollection", new { ids }, companies);
+            return Ok();
         }
 
         [HttpPut]

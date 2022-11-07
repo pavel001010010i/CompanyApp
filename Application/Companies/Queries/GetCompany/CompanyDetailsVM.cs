@@ -5,7 +5,7 @@ using Domain;
 
 namespace Application.Companies.Queries.GetCompany
 {
-    public class CompanyDetailsVM : IMapWith<Company>
+    public class CompanyDetailsVm : IMapWith<Company>
     {
         public Guid Id { get; set; }
         public string Name { get; set; } = "None";
@@ -13,7 +13,7 @@ namespace Application.Companies.Queries.GetCompany
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<Company, CompanyDetailsVM>()
+            profile.CreateMap<Company, CompanyDetailsVm>()
             .ForMember(c => c.FullAddress,
             opt => opt.MapFrom(x => string.Join(' ', x.Address, x.Country)));
         }

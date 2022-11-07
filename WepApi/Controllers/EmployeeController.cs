@@ -1,9 +1,12 @@
-﻿using Application.Employees.Commands.CreateEmployee;
+﻿using Application.Companies.Queries.GetCompany.List;
+using Application.Companies.Queries.GetCompany;
+using Application.Employees.Commands.CreateEmployee;
 using Application.Employees.Queries.Get.Details;
 using AutoMapper;
 using Domain;
 using Microsoft.AspNetCore.Mvc;
 using WepApi.Models.Employees;
+using Application.Employees.Queries.Get.List;
 
 namespace WepApi.Controllers
 {
@@ -12,6 +15,13 @@ namespace WepApi.Controllers
     {
         private readonly IMapper _mapper;
         public EmployeeController(IMapper mapper) => _mapper = mapper;
+
+        [HttpGet]
+        public async Task<ActionResult<CompanyListDetailsVm>> GetEmployes(Guid companyId)
+        {
+            var result = await Mediator.Send(new GetEmployeeListDetailsQuery { CompanyId = companyId });
+            return Ok(result);
+        }
 
         [HttpGet("{id}", Name = "GetEmployeeForCompany")]
         public async Task<ActionResult> GetEmployeeForCompany(Guid companyId, Guid id)

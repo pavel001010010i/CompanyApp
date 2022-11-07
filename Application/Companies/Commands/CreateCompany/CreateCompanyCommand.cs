@@ -3,7 +3,7 @@ using MediatR;
 
 namespace Application.Companies.Commands.CreateCompany
 {
-    public class CreateCompanyCommand : IRequest<Company>
+    public class CreateCompanyCommand : IRequest<Guid>
     {
         public string Name { get; set; }
         public string Address { get; set; }
