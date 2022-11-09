@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using WepApi.Models.Employees;
 using Application.Employees.Queries.Get.List;
 using Application.Employees.Commands.UpdateEmployee;
+using Application.Companies.Commands.DeleteCompany;
+using Application.Employees.Commands.DeleteEmployee;
 
 namespace WepApi.Controllers
 {
@@ -46,6 +48,15 @@ namespace WepApi.Controllers
             //и можно так замаппить команду, сделал для примера)
             var command = Mapper.Map<UpdateEmployeeCommand>(updateEmployeeDTO);
             command.CompanyId = companyId;
+
+            await Mediator.Send(command);
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteEmployee(Guid companyId, Guid id)
+        {
+            var command = new DeleteEmployeeCommand { Id = id, CompanyId = companyId };
             await Mediator.Send(command);
             return NoContent();
         }
