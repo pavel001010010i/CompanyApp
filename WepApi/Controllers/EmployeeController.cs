@@ -12,17 +12,18 @@ namespace WepApi.Controllers
     [Route("api/company/{companyId}/[controller]/[action]")]
     public class EmployeeController : BaseController
     {
-        [HttpGet]
-        public async Task<ActionResult<CompanyListDetailsVm>> GetEmployes(Guid companyId)
-        {
-            var result = await Mediator.Send(new GetEmployeeListDetailsQuery { CompanyId = companyId });
-            return Ok(result);
-        }
 
         [HttpGet("{id}", Name = "GetEmployee")]
         public async Task<ActionResult> GetEmployeeForCompany(Guid companyId, Guid id)
         {
             var result = await Mediator.Send(new GetEmployeeDetailsQuery { Id = id, CompanyId = companyId });
+            return Ok(result);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<CompanyListDetailsVm>> GetEmployes(Guid companyId)
+        {
+            var result = await Mediator.Send(new GetEmployeeListDetailsQuery { CompanyId = companyId });
             return Ok(result);
         }
 
@@ -39,7 +40,7 @@ namespace WepApi.Controllers
             return CreatedAtRoute("GetEmployee", new { companyId = employee.CompanyId, id = employee.Id }, employee);
         }
 
-        [HttpPost]
+        [HttpPut]
         public async Task<ActionResult> UpdateEmployee(Guid companyId, [FromBody] UpdateEmployeeDTO updateEmployeeDTO)
         {
             //и можно так замаппить команду, сделал для примера)
