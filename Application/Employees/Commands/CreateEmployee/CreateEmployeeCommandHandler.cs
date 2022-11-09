@@ -1,4 +1,5 @@
 ﻿using Application.Interfaces;
+using AutoMapper;
 using Domain;
 using MediatR;
 
@@ -8,18 +9,13 @@ namespace Application.Employees.Commands.CreateEmployee
         : IRequestHandler<CreateEmployeeCommand, Employee>
     {
         private readonly IDbContext _dbContext;
-        public CreateEmployeeCommandHandler(IDbContext dbContext) => _dbContext = dbContext;
+        private readonly IMapper _mapper;
+        public CreateEmployeeCommandHandler(IDbContext dbContext, IMapper mapper)
+             => (_dbContext, _mapper) = (dbContext, mapper);
 
         public async Task<Employee> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
         {
-            var entity = new Employee
-            {
-                Id = Guid.NewGuid(),
-                CompanyId = request.CompanyId,
-                Name = request.Employee.Name,
-                Age = request.Employee.Age,
-                Position = request.Employee.Position
-            };
+            var entity = _mapper.Map<Employee>(request);
 
             await _dbContext.Employees.AddAsync(entity, cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);

@@ -24,8 +24,6 @@ namespace Application.Companies.Commands.UpdateCompany
             entity.Name = request.Name;
             entity.Address = request.Address;
             entity.Country= request.Country;
-            //entity.Employees = request.Employees;
-            //было employeDto for Create
 
             await _dbContext.SaveChangesAsync(cancellationToken);
 

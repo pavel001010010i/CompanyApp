@@ -15,8 +15,6 @@ namespace WepApi.Controllers
 {
     public class CompanyController : BaseController
     {
-        private readonly IMapper _mapper;
-        public CompanyController(IMapper mapper) => _mapper = mapper;
 
         [HttpGet("{id}", Name = "CompanyById")]
         public async Task<ActionResult<CompanyDetailsVm>> GetCompany(Guid id)
@@ -45,7 +43,7 @@ namespace WepApi.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateCompany([FromBody] CreateCompanyDTO CreateCompanyDTO)
         {
-            var command = _mapper.Map<CreateCompanyCommand>(CreateCompanyDTO);
+            var command = Mapper.Map<CreateCompanyCommand>(CreateCompanyDTO);
             var companyId = await Mediator.Send(command);
             return Ok(companyId);
         }
@@ -56,7 +54,8 @@ namespace WepApi.Controllers
 
             foreach(var company in CreateCompanyCollectionDTO)
             {
-                var command = _mapper.Map<CreateCompanyCommand>(company);
+                var command = Mapper.Map<CreateCompanyCommand>(company);
+                await Mediator.Send(command);
             }
             return Ok();
         }
@@ -64,7 +63,7 @@ namespace WepApi.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateCompany([FromBody] UpdateCompanyDTO updateCompanyDTO)
         {
-            var command = _mapper.Map<UpdateCompanyCommand>(updateCompanyDTO);
+            var command = Mapper.Map<UpdateCompanyCommand>(updateCompanyDTO);
             await Mediator.Send(command);
             return NoContent();
         }

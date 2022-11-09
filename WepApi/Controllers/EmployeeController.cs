@@ -1,21 +1,17 @@
-﻿using Application.Companies.Queries.GetCompany.List;
-using Application.Companies.Queries.GetCompany;
+﻿using Application.Companies.Queries.GetCompany;
 using Application.Employees.Commands.CreateEmployee;
 using Application.Employees.Queries.Get.Details;
-using AutoMapper;
 using Domain;
 using Microsoft.AspNetCore.Mvc;
 using WepApi.Models.Employees;
 using Application.Employees.Queries.Get.List;
+using Application.Employees.Commands.UpdateEmployee;
 
 namespace WepApi.Controllers
 {
-    [Route("api/company/{companyId}/[controller]")]
+    [Route("api/company/{companyId}/[controller]/[action]")]
     public class EmployeeController : BaseController
     {
-        private readonly IMapper _mapper;
-        public EmployeeController(IMapper mapper) => _mapper = mapper;
-
         [HttpGet]
         public async Task<ActionResult<CompanyListDetailsVm>> GetEmployes(Guid companyId)
         {
@@ -23,24 +19,34 @@ namespace WepApi.Controllers
             return Ok(result);
         }
 
-        [HttpGet("{id}", Name = "GetEmployeeForCompany")]
+        [HttpGet("{id}", Name = "GetEmployee")]
         public async Task<ActionResult> GetEmployeeForCompany(Guid companyId, Guid id)
         {
-            var query = new GetEmployeeDetailsQuery { Id = id, CompanyId = companyId };
-            var result = await Mediator.Send(query);
+            var result = await Mediator.Send(new GetEmployeeDetailsQuery { Id = id, CompanyId = companyId });
             return Ok(result);
         }
 
         [HttpPost]
         public async Task<ActionResult> CreateEmployee(Guid companyId, [FromBody] CreateEmployeeDTO createEmployeeDTO)
         {
+            //можно так замаппить команду
             var command = new CreateEmployeeCommand 
             { 
                 CompanyId = companyId, 
-                Employee = _mapper.Map<Employee>(createEmployeeDTO) 
+                Employee = Mapper.Map<Employee>(createEmployeeDTO) 
             };
             var employee = await Mediator.Send(command);
-            return CreatedAtRoute("GetEmployeeForCompany", new { companyId = employee.CompanyId, id = employee.Id }, employee);
+            return CreatedAtRoute("GetEmployee", new { companyId = employee.CompanyId, id = employee.Id }, employee);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> UpdateEmployee(Guid companyId, [FromBody] UpdateEmployeeDTO updateEmployeeDTO)
+        {
+            //и можно так замаппить команду, сделал для примера)
+            var command = Mapper.Map<UpdateEmployeeCommand>(updateEmployeeDTO);
+            command.CompanyId = companyId;
+            await Mediator.Send(command);
+            return NoContent();
         }
 
     }
